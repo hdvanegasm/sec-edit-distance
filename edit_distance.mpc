@@ -1,0 +1,44 @@
+import mpc_math
+
+def edit_distance(A, B):
+    D = Matrix(len(A) + 1, len(B) + 1, sint)
+    D.assign_all(0)
+
+    @for_range(len(A) + 1)
+    def _(i):
+        D[i][0] = i
+
+    @for_range(len(B) + 1)
+    def _(j):
+        D[0][j] = j
+
+    @for_range(1, len(A) + 1)
+    def _(i):
+        @for_range(1, len(B) + 1)
+        def _(j):
+
+            D[i][j] = (D[i - 1][j] + 1).min(
+                D[i][j - 1] + 1
+            ).min(
+                D[i - 1][j - 1] + (A[i - 1] != B[j - 1])
+            )
+    
+    return D[len(A)][len(B)]
+
+
+def read_strings(A_length, B_length):
+    A = Array(A_length, sint)
+    B = Array(B_length, sint)
+
+    for i in range(A_length):
+        A[i] = sint.get_input_from(0)
+    for j in range(B_length):
+        B[j] = sint.get_input_from(1)
+
+    return A, B
+
+A_length = int(program.args[1])
+B_length = int(program.args[2])
+A, B = read_strings(A_length, B_length)
+dist = edit_distance(A, B)
+print_ln("Edit distance = %s", dist.reveal())
