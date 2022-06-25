@@ -1,4 +1,4 @@
-# program.use_edabit(True)
+program.use_edabit(True)
 
 def compute_comp_matrix(A, B):
     M_comp = Matrix(len(A), len(B), sint)

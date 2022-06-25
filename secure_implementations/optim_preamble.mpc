@@ -40,9 +40,15 @@ def read_strings(A_length, B_length):
     return A, B
 
 
+def show_matrix(X):
+    for i in range(len(X)):
+        print_ln("%s", X[i].reveal())
+
+
 A_length = int(program.args[1])
 B_length = int(program.args[2])
 A, B = read_strings(A_length, B_length)
 M = compute_comp_matrix(A, B)
+# show_matrix(M)
 
     

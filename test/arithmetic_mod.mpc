@@ -1,6 +1,6 @@
 a = sint(1)
-b = sint(0)
+b = sint(1)
 
-sum = a + b 
+sum = a == b 
 
 print_ln("%s", sum.reveal())
