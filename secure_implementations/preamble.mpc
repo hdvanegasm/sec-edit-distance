@@ -1,0 +1,31 @@
+# program.use_edabit(True)
+
+def compute_comp_matrix(A, B):
+    M_comp = Matrix(len(A), len(B), sint)
+    @for_range(len(A))
+    def _(i):
+        @for_range(len(B))
+        def _(j):
+            comp = (A[i] != B[j])
+            M_comp[i][j] = comp
+            M_comp[j][i] = comp
+
+    return M_comp
+
+
+def read_strings(A_length, B_length):
+    A = Array(A_length, sint)
+    B = Array(B_length, sint)
+
+    for i in range(A_length):
+        A[i] = sint.get_input_from(0)
+    for j in range(B_length):
+        B[j] = sint.get_input_from(1)
+
+    return A, B
+
+
+A_length = int(program.args[1])
+B_length = int(program.args[2])
+A, B = read_strings(A_length, B_length)
+M = compute_comp_matrix(A, B)

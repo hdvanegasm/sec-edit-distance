@@ -1,0 +1,48 @@
+def xor_nucleotids(N1, N2):
+    xor = Array(2, sint)
+    xor[0] = N1[0] + N2[0]
+    xor[1] = N1[1] + N2[1]
+    return xor
+
+
+def or_nucleotid(N):
+    return N[0].bit_or(N[1])
+
+
+def equal_nucleotids(N1, N2):
+    return 1 - or_nucleotid(xor_nucleotids(N1, N2))
+
+
+def compute_comp_matrix(A, B):
+    M_comp = Matrix(len(A), len(B), sint)
+    @for_range(len(A))
+    def _(i):
+        @for_range(len(B))
+        def _(j):
+            comp = equal_nucleotids(A[i], B[j]).bit_not()
+            M_comp[i][j] = comp
+            M_comp[j][i] = comp
+
+    return M_comp
+
+
+def read_strings(A_length, B_length):
+    A = Matrix(A_length, 2, sint)
+    B = Matrix(B_length, 2, sint)
+
+    for i in range(A_length):
+        A[i][0] = sint.get_input_from(0)
+        A[i][1] = sint.get_input_from(0)
+    for j in range(B_length):
+        B[j][0] = sint.get_input_from(1)
+        B[j][1] = sint.get_input_from(1)
+
+    return A, B
+
+
+A_length = int(program.args[1])
+B_length = int(program.args[2])
+A, B = read_strings(A_length, B_length)
+M = compute_comp_matrix(A, B)
+
+    
