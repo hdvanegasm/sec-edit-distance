@@ -1,5 +1,9 @@
 import mpc_math
 
+
+program.use_edabit(True)
+
+
 def edit_distance(A, B):
     D = Matrix(len(A) + 1, len(B) + 1, sint)
     D.assign_all(0)

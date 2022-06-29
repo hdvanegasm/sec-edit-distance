@@ -1,0 +1,78 @@
+program.use_edabit(True)
+
+
+def xor_nucleotids(N1, N2):
+    xor = Array(2, sint)
+    xor[0] = N1[0].bit_xor(N2[0])
+    xor[1] = N1[1].bit_xor(N2[1])
+    return xor
+
+
+def or_nucleotid(N):
+    return N[0].bit_or(N[1])
+
+
+def equal_nucleotids(N1, N2):
+    return or_nucleotid(xor_nucleotids(N1, N2)).bit_not()
+
+
+def compute_comp_matrix(A, B):
+    M_comp = Matrix(len(A), len(B), sint)
+    @for_range(len(A))
+    def _(i):
+        @for_range(len(B))
+        def _(j):
+            comp = equal_nucleotids(A[i], B[j]).bit_not()
+            M_comp[i][j] = comp
+            M_comp[j][i] = comp
+
+    return M_comp
+
+
+def edit_distance(A, B):
+    T = compute_comp_matrix(A, B)
+    
+    D = Matrix(len(A) + 1, len(B) + 1, sint)
+    D.assign_all(0)
+
+    @for_range(len(A) + 1)
+    def _(i):
+        D[i][0] = i
+
+    @for_range(len(B) + 1)
+    def _(j):
+        D[0][j] = j
+
+    @for_range(1, len(A) + 1)
+    def _(i):
+        @for_range(1, len(B) + 1)
+        def _(j):
+
+            D[i][j] = (D[i - 1][j] + 1).min(
+                D[i][j - 1] + 1
+            ).min(
+                D[i - 1][j - 1] + T[i - 1][j - 1]
+            )
+    
+    return D[len(A)][len(B)]
+
+
+def read_strings(A_length, B_length):
+    A = Matrix(A_length, 2, sint)
+    B = Matrix(B_length, 2, sint)
+
+    for i in range(A_length):
+        A[i][0] = sint.get_input_from(0)
+        A[i][1] = sint.get_input_from(0)
+    for j in range(B_length):
+        B[j][0] = sint.get_input_from(1)
+        B[j][1] = sint.get_input_from(1)
+
+    return A, B
+
+
+A_length = int(program.args[1])
+B_length = int(program.args[2])
+A, B = read_strings(A_length, B_length)
+d = edit_distance(A, B)
+print_ln("Edit distance = %s", d.reveal())
