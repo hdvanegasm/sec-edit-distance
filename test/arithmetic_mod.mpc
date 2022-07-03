@@ -1,3 +1,7 @@
+'''
+This file is for testing comparisons in multiple computation domains
+'''
+
 a = sint(1)
 b = sint(1)
 

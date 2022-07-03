@@ -1,3 +1,8 @@
+'''
+This source code is an implementation of the edit-distance algorithm
+using dynamic programming.
+'''
+
 import numpy as np
 
 def edit_distance(A, B):
@@ -25,7 +30,13 @@ def edit_distance(A, B):
     return D[len(A)][len(B)]
 
 if __name__ == "__main__":
-    A = "0332122211212213333200311021123031331003221211222101023212230103032112130222312020200111030203110023"
-    B = "2232121113203122113323010123023122331231323103130021312020121113130001302131230013301022013210201131"
+    file_chain_A = open("inputs/arithmetic/Input-P0-0")
+    file_chain_B = open("inputs/arithmetic/Input-P1-0")
+    
+    A = file_chain_A.read().replace("\n", "")
+    B = file_chain_B.read().replace("\n", "")   
+    
+    file_chain_A.close()
+    file_chain_B.close()
 
     print("Distance =", edit_distance(A, B))
