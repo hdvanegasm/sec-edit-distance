@@ -5,7 +5,6 @@ def xor_nucleotids(N1, N2):
     xor = Array(2, sint)
     xor[0] = N1[0].bit_xor(N2[0])
     xor[1] = N1[1].bit_xor(N2[1])
-    print_ln("%s %s = %s", N1.reveal(), N2.reveal(), xor.reveal())
     return xor
 
 
@@ -25,19 +24,13 @@ def compute_comp_matrix(A, B):
         def _(j):
             comp = equal_nucleotids(A[i], B[j]).bit_not()
             M_comp[i][j] = comp
-            M_comp[j][i] = comp
 
     return M_comp
 
 
 def edit_distance(A, B):
     T = compute_comp_matrix(A, B)
-
-    for i in range(len(A)):
-        print_ln("%s", T[i].reveal())
-
-    program.set_bit_length(64)
-
+    
     D = Matrix(len(A) + 1, len(B) + 1, sint)
     D.assign_all(0)
 

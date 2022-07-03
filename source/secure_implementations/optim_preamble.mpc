@@ -21,7 +21,6 @@ def compute_comp_matrix(A, B):
         def _(j):
             comp = equal_nucleotids(A[i], B[j]).bit_not()
             M_comp[i][j] = comp
-            M_comp[j][i] = comp
 
     return M_comp
 

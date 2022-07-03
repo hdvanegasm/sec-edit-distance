@@ -20,6 +20,8 @@ def edit_distance(A, B):
                 t = 0 
             else:
                 t = 1
+            
+            print("(", i - 1, ",", j - 1, ")", "-", t)
 
             D[i][j] = min(
                 D[i - 1][j] + 1,
