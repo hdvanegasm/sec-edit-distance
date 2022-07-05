@@ -1,0 +1,19 @@
+sb = sbits.get_type(1)
+
+a = sb(1)
+b = sb(1)
+
+print_ln('XOR: %s', (a ^ b).reveal())
+print_ln('AND: %s', (a & b).reveal())
+print_ln('NOT: %s', (~a).reveal())
+
+a_int = sint(a)
+b_int = sint(b)
+
+print_ln("SUM: %s", (a_int + b_int).reveal())
+
+array = Array(2, sb)
+array[0] = sb(1)
+array[1] = sb(1)
+
+print_ln("ARRAY: %s %s", array[0].reveal(), array[1].reveal())
