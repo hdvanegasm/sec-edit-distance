@@ -1,0 +1,10 @@
+sb32 = sbits.get_type(32)
+x = sbitvec.from_vec([sb32(1), sb32(0), sb32(1)])
+y = sbitvec.from_vec([sb32(1), sb32(0), sb32(0)])
+
+ones = sbitvec.from_vec([sb32(1), sb32(1), sb32(1)])
+
+z = ((x ^ ones) & (y ^ ones)) ^ ones # AND
+
+
+print_ln("%s", [z.v[0].reveal(), z.v[1].reveal(), z.v[2].reveal()])
