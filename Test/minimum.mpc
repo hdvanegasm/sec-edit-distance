@@ -1,0 +1,13 @@
+# program.use_edabit(True)
+
+q = Array(3000, sint)
+m = Array(1, sint)
+
+# m[0] = tree_reduce(lambda x, y: x.min(y), q)
+
+m[0] = q[0]
+@for_range(1, len(q))
+def _(i):
+    m[0] = m[0].min(q[i])
+
+print_ln("%s", m[0].reveal())
