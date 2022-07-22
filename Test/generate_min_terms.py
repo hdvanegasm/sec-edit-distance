@@ -1,10 +1,11 @@
 import itertools
+import math
 
 if __name__ == "__main__":
     n = 3
     
     # Computation of minimum elements in terms of T
-    for i in range(0, n + 1):
+    for i in range(0, math.ceil(n / 2)):
         elements = list(range(1, n + 1))
         iterator = itertools.combinations(elements, n - i)
         output = "D_{0," + str(i) + "}"
@@ -15,7 +16,7 @@ if __name__ == "__main__":
             print(output + " " + t_output + (" + " + str(i) if i != 0 else ""))
         
     # Computation of minimum elements in terms of L
-    for i in range(1, n + 1):
+    for i in range(1, math.ceil(n / 2)):
         elements = list(range(1, n + 1))
         iterator = itertools.combinations(elements, n - i)
         output = "D_{" + str(i) + "," + "0}"

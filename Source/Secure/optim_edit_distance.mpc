@@ -16,6 +16,7 @@ is sent is the same compared to a traditional implementation
 that computes and saves the whole matrix D.
 '''
 
+from Compiler import util
 
 program.use_edabit(True)
 sb = sbits.get_type(1)
@@ -72,12 +73,12 @@ def edit_distance(A, B):
     def _(i):
         @for_range(1, len(B) + 1)
         def _(j):
-
-            D[i][j] = (D[i - 1][j] + 1).min(
-                D[i][j - 1] + 1
-            ).min(
+            min_terms = [
+                D[i - 1][j] + 1, 
+                D[i][j - 1] + 1, 
                 D[i - 1][j - 1] + T[i - 1][j - 1]
-            )
+            ]
+            D[i][j] = util.min(min_terms)
     
     return D[len(A)][len(B)]
 

@@ -1,13 +1,18 @@
+import math
+
 # program.use_edabit(True)
 
-q = Array(3000, sint)
+n = 25
+
 m = Array(1, sint)
 
-# m[0] = tree_reduce(lambda x, y: x.min(y), q)
+# q_optim = Array(2 ** (math.ceil(n / 2) - 1), sint)
+# m[0] = tree_reduce(lambda x, y: x.min(y), q_optim)
 
-m[0] = q[0]
-@for_range(1, len(q))
+q_normal = Array(n * n, sint)
+m[0] = q_normal[0]
+@for_range(1, len(q_normal))
 def _(i):
-    m[0] = m[0].min(q[i])
+   m[0] = m[0].min(q_normal[i]).min(q_normal[i])
 
 print_ln("%s", m[0].reveal())
