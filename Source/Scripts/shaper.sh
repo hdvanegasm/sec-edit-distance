@@ -45,7 +45,7 @@ PEAKRATE=900mbit
 IF=lo
 
 # Average to delay packets by
-LATENCY=2ms
+LATENCY=12ms
 
 
 start() {
