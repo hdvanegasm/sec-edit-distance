@@ -1,0 +1,4 @@
+@for_range(0, 10, 2)
+def _(i):
+    print_ln("%s", i)
+    i = i - 1

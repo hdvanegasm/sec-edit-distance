@@ -38,9 +38,9 @@ def equal_nucleotids(N1, N2):
 
 def compute_comp_matrix(A, B):
     M_comp = Matrix(len(A), len(B), sb)
-    @for_range(len(A))
+    @for_range_opt(len(A))
     def _(i):
-        @for_range(len(B))
+        @for_range_opt(len(B))
         def _(j):
             comp = equal_nucleotids(A[i], B[j]).bit_not()
             M_comp[i][j] = comp
@@ -52,20 +52,20 @@ def edit_distance(A, B):
     T_bits = compute_comp_matrix(A, B)
     T = Matrix(len(T_bits), len(T_bits[0]), sint)
 
-    @for_range(len(T_bits))
+    @for_range_opt(len(T_bits))
     def _(i):
-        @for_range(len(T_bits[0]))
+        @for_range_opt(len(T_bits[0]))
         def _(j):
             T[i][j] = sint(T_bits[i][j])
     
     D = Matrix(len(A) + 1, len(B) + 1, sint)
     D.assign_all(0)
 
-    @for_range(len(A) + 1)
+    @for_range_opt(len(A) + 1)
     def _(i):
         D[i][0] = i
 
-    @for_range(len(B) + 1)
+    @for_range_opt(len(B) + 1)
     def _(j):
         D[0][j] = j
 
