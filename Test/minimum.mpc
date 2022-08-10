@@ -1,13 +1,13 @@
-import math
+from Compiler import util
 
 # program.use_edabit(True)
 
-n = 25
+n = 9
 
 m = Array(1, sint)
 
-# q_optim = Array(2 ** (math.ceil(n / 2) - 1), sint)
-# m[0] = tree_reduce(lambda x, y: x.min(y), q_optim)
+q_optim = Array(2 ** n - 1, sint)
+m[0] = util.min(q_optim)
 
 # q_normal = Array(n * n, sint)
 # m[0] = q_normal[0]

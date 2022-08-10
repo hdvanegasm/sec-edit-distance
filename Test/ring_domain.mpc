@@ -1,6 +1,8 @@
+program.use_edabit(True)
+
 a = sint(1)
 b = sint(1)
 
-c = a.bit_xor(b)
-
-print_ln("c = %s", c.reveal()) 
+@for_range_opt(1000)
+def _(_):
+    a == b

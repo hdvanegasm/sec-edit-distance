@@ -1,0 +1,7 @@
+sb = sbits.get_type(8)
+a = sb(1)
+b = sb(1)
+
+@for_range_opt(1000)
+def _(_):
+    a & b

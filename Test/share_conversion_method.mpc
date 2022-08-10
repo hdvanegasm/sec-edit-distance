@@ -1,0 +1,5 @@
+# program.use_edabit(True)
+
+sb = sbits.get_type(64)
+a = sb(3)
+a_int = sint(a)

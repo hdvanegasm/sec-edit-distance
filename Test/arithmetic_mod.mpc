@@ -1,10 +1,8 @@
 '''
-This file is for testing comparisons in multiple computation domains
+This file is for testing arithmetic in multiple computation domains
 '''
 
 a = sint(1)
 b = sint(1)
 
-sum = a == b 
-
-print_ln("%s", sum.reveal())
+m = a < b

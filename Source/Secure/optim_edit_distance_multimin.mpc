@@ -1,19 +1,16 @@
 '''
-Implementation of secure edit distance computation. The 
-optimizations are the following:
-    * The computation of the funcion t(.,.) is done using
-      shares in Z_2. The transition to shares in Z_M is
-      done using daBits/edaBits for share conversion. This
-      conversion allows to compute the comparisons faster.
+Implementation of secure edit distance computation. The optimizations are the 
+following:
+    * The computation of the funcion t(.,.) is done using shares in Z_2. The 
+      transition to shares in Z_M is done using daBits/edaBits for share conver-
+      sion. This conversion allows to compute the comparisons faster.
       
-Note: here we are not interested in reconstructing the 
-aligment. Moreover, considering such context, there is a
-way to optimize the computation to use only the three values
-needed in each iteration and put aside the other values of
-the matrix D. Such approach is not useful here because it only
-saves memory for each party locally, but the information that
-is sent is the same compared to a traditional implementation
-that computes and saves the whole matrix D.
+Note: here we are not interested in reconstructing the aligment. Moreover, con-
+sidering such context, there is away to optimize the computation to use only the
+three values needed in each iteration and put aside the other values of the ma-
+trix D. Such approach is not useful here because it only saves memory for each 
+party locally, but the information that is sent is the same compared to a tradi-
+tional implementation that computes and saves the whole matrix D.
 '''
 
 from Compiler import util
