@@ -6,7 +6,7 @@ This is an implementation of privacy-preserving edit distance using MPC protocol
 
 ### Naïve implementation
 
-The naïve implementation uses a natural encoding for the nucleotids in a DNA chain. The nucleotids are encoded in the set {$0, 1, 2, 3$}. This implementation compares all the nucleotids in the natural way.
+The naïve implementation uses a natural encoding for the nucleotids in a DNA chain. The nucleotids are encoded in the set {0, 1, 2, 3}. This implementation compares all the nucleotids in the natural way.
 
 ### Optimized implementation
 
