@@ -1,0 +1,10 @@
+N = 100
+
+M = Matrix(N, N, sint)
+a = Array(1, sint)
+
+@for_range_opt(N)
+def _(i):
+    @for_range_opt(N)
+    def _(j):
+        a[0] = M[i][j] * M[i][j]

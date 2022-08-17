@@ -1,7 +1,41 @@
-sb = sbits.get_type(8)
-a = sb(1)
-b = sb(1)
+program.use_edabit(True)
+sb = sbits.get_type(1)
 
-@for_range_opt(1000)
-def _(_):
-    a & b
+
+def xor_nucleotids(N1, N2):
+    xor = Array(2, sb)
+    xor[0] = N1[0] ^ N2[0]
+    xor[1] = N1[1] ^ N2[1]
+    return xor
+
+
+def or_nucleotid(N):
+    return N[0].bit_or(N[1])
+
+
+def equal_nucleotids(N1, N2):
+    return or_nucleotid(xor_nucleotids(N1, N2)).bit_not()
+
+
+def compute_comp_matrix(A, B):
+    M_comp = Matrix(len(A), len(B), sb)
+    @for_range_opt(len(A))
+    def _(i):
+        @for_range_opt(len(B))
+        def _(j):
+            comp = equal_nucleotids(A[i], B[j]).bit_not()
+            M_comp[i][j] = comp
+
+    return M_comp
+
+A = Matrix(100, 2, sb)
+B = Matrix(100, 2, sb)
+T_bits = compute_comp_matrix(A, B)
+
+T = Matrix(len(T_bits), len(T_bits[0]), sint)
+
+@for_range_opt(len(T_bits))
+def _(i):
+    @for_range_opt(len(T_bits[0]))
+    def _(j):
+        T[i][j] = sint(T_bits[i][j])

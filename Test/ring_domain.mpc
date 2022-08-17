@@ -6,3 +6,4 @@ b = sint(1)
 @for_range_opt(1000)
 def _(_):
     a == b
+
