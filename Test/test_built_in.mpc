@@ -1,0 +1,4 @@
+n = 200
+M = Matrix(n, n, sint)
+
+M.schur(M)

@@ -2,7 +2,7 @@ a = sint(2)
 p = Array(1, sint)
 p[0] = 1
 
-N = 1000
+N = 500
 
 @for_range(N)
 def _(_):
