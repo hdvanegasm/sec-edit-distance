@@ -2,11 +2,11 @@ from Compiler import util
 
 # program.use_edabit(True)
 
-n = 9
+n = 8
 
 m = Array(1, sint)
 
-q_optim = Array(2 ** n - 1, sint)
+q_optim = Array(2 ** (n + 1) - 1, sint)
 m[0] = util.min(q_optim)
 
 # q_normal = Array(n * n, sint)

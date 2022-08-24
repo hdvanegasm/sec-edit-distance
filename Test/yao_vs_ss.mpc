@@ -1,0 +1,10 @@
+sb = sbits.get_type(1)
+
+N = 100
+
+a = sb.get_input_from(0)
+b = sb.get_input_from(1)
+
+@for_range(N)
+def _(_):
+    r = a.bit_and(b)

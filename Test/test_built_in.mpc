@@ -1,4 +1,4 @@
-n = 200
-M = Matrix(n, n, sint)
+n = 500
+M = Matrix(n, n, sfix)
 
 M.schur(M)
