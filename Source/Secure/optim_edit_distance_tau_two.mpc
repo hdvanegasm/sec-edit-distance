@@ -4,6 +4,10 @@ following:
     * The computation of the funcion t(.,.) is done using shares in Z_2. The 
       transition to shares in Z_M is done using daBits/edaBits for share conver-
       sion. This conversion allows to compute the comparisons faster.
+    * The computation of the matrix D is done by sub-matrices of size tau=2. This 
+      allows to use protocols to compute the min() function using a logaritmic number
+      of rounds in the number of arguments. This reduces the overall number of
+      rows significatively.
       
 Note: here we are not interested in reconstructing the aligment. Moreover, con-
 sidering such context, there is away to optimize the computation to use only the
