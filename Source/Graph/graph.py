@@ -1,6 +1,14 @@
 import collections
-from gettext import find
 import sys
+
+
+def get_n_black_edges(self, path_colored):
+    '''
+    Returns the number of black edges in the path.
+    '''
+    
+    return path_colored.count("b")
+
 
 class Graph:
     '''
@@ -65,13 +73,6 @@ class Graph:
         Returns the number of red edges in path_ref but not in path_other.
         '''
         pass
-    
-    def get_n_black_edges(self, path_colored):
-        '''
-        Returns the number of black edges in the path.
-        '''
-        
-        return path_colored.count("b")
     
     def BFS(self, start, parents):
         '''
