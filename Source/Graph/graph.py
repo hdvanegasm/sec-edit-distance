@@ -2,7 +2,7 @@ import collections
 import sys
 
 
-def get_n_black_edges(self, path_colored):
+def get_n_black_edges(path_colored):
     '''
     Returns the number of black edges in the path.
     '''
@@ -34,13 +34,41 @@ class Graph:
         '''
         if not v in self.adj:
             self.adj[v] = []
+            
+    def DFS(self, v, w, visited, path, result):
+        '''
+        This method performs DFS over the graph to print all the paths between
+        two vertices.
+        '''
+        if v == w:
+            result.append(path.copy())
+            return
+        
+        visited[v] = True
+    
+        for (vertex, _) in self.adj[v]:
+            if not visited[vertex]:
+                path.append(vertex)
+                self.DFS(vertex, w, visited, path, result)
+                path.remove(vertex)
+                
+        visited[v] = False
     
     def all_paths(self, v, w):
         '''
         Given two vertices v and w, the method returns all paths between the two
         vertices.
         '''
-        pass
+        visited = {}
+        for vertex in self.adj.keys():
+            visited[vertex] = False
+        
+        path = [v]
+        result = []
+        
+        self.DFS(v, w, visited, path, result)
+        
+        return result
     
     def generate_dependency_graph(self):
         '''
@@ -61,18 +89,97 @@ class Graph:
                 self.add_edge(v=(i, j + 1), w=(i, j), color="b")
                 self.add_edge(v=(i + 1, j), w=(i, j), color="b")
     
-    def get_indexes_formulas(self, v_init, v_end):
+    def get_relevant_paths(self, v_init, v_end):
         '''
-        Return all the indexes formulas for a pair of indexes. Here v_init is in
-        T or L, and v_end is in R or B.
+        Return all the paths induced by relevant formulas for a pair of indexes. 
+        Here v_init is in T or L, and v_end is in R or B.
         '''
-        pass
+        
+        shortest_paths = self.shortest_paths(v_init, v_end)
+        all_paths = self.all_paths(v_init, v_end)
+        relevant_paths = shortest_paths.copy()
+        for path in all_paths:
+            is_relevant = True
+            for shortest_path in shortest_paths:
+                red_diff = self.get_n_red_diff(path, shortest_path)
+                n_black_path = get_n_black_edges(path)
+                n_black_shortest = get_n_black_edges(shortest_path)
+                
+                if red_diff + n_black_shortest <= n_black_path:
+                    is_relevant = False
+            
+            if is_relevant:
+                relevant_paths.append(path)
+                
+        return relevant_paths
     
+    def get_relevant_formulas(self, v_init, v_end):
+        '''
+        This method returns all the relevant formulas. A formula will be repre-
+        sented as a list of tuple of t indexes plus the number of black edges.
+        For example: 
+            ([(1, 2), (2, 0)], 4)
+        represents the formula with the following form
+           D_{end} = D_{init} + t_{i-1, j-2} + t_{i-2, j} + 4
+        '''
+        
+        relevant_paths = self.get_relevant_paths(v_init, v_end)
+        relevant_forms = []
+        for path in relevant_paths:
+            relevant_forms.append(self.get_formula_from_path(path))
+        
+        return relevant_forms
+                    
+    def get_formula_from_path(self, path):
+        '''
+        This method returns a formula associated with the given path.
+        A formula will be represented as a list of tuple of t indexes plus the 
+        number of black edges. For example: 
+            ([(1, 2), (2, 0)], 4)
+        represents the formula with the following form
+           D_{end} = D_{init} + t_{i-1, j-2} + t_{i-2, j} + 4
+        '''
+        
+        t_indexes = []
+        colored_path = self.get_colored_path(path)
+        for i in range(1, len(path)):
+            if colored_path[i - 1] == "r":
+                t_indexes.append(path[i])
+        
+        n_black = get_n_black_edges(colored_path)
+        
+        return (t_indexes, n_black)
+        
     def get_n_red_diff(self, path_ref, path_other):
         '''
         Returns the number of red edges in path_ref but not in path_other.
+        Note: given the structure of the graph, the paths does not repeat
+        vertices. For this reason, the tail will appear only once in the list
+        as well as the head.
         '''
-        pass
+        
+        count = 0 
+        
+        path_ref_colors = self.get_colored_path(path_ref)
+        
+        for i in range(1, len(path_ref)):
+            tail_ref = path_ref[i - 1]
+            head_ref = path_ref[i]
+            
+            if path_ref_colors[i - 1] == "b":
+                continue
+            
+            try:
+                index_tail_other = path_other.index(tail_ref)
+            except ValueError:
+                continue
+            
+            if index_tail_other == len(path_other) - 1:
+                continue
+            elif head_ref != path_other[index_tail_other + 1]:
+                count += 1
+                
+        return count          
     
     def BFS(self, start, parents):
         '''
@@ -140,6 +247,10 @@ class Graph:
         return result_paths
     
     def get_colored_path(self, path):
+        '''
+        Given a path, this method returns the color of the edges of such path.
+        '''
+        
         colors = []
         for i in range(1, len(path)):
             for (vertex, color) in self.adj[path[i - 1]]:
