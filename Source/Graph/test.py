@@ -21,3 +21,16 @@ if __name__ == "__main__":
     print("# Relevant formulas =", len(relevant_forms))
     for relevant_form in relevant_forms:
         print(relevant_form)
+        
+    print("\n===========[TEST]===========")
+    
+    end = (0, 0)
+    tau = 8
+    
+    G = graph.Graph(tau)
+    G.generate_dependency_graph()
+    
+    formulas = G.get_block_formulas_from_endpoint(end)
+    
+    for f in formulas:
+        print(f)

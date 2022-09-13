@@ -148,7 +148,7 @@ class Graph:
         
         n_black = get_n_black_edges(colored_path)
         
-        return (t_indexes, n_black)
+        return (path[0], t_indexes, n_black)
         
     def get_n_red_diff(self, path_ref, path_other):
         '''
@@ -257,3 +257,30 @@ class Graph:
                 if vertex == path[i]:
                     colors.append(color)
         return colors
+    
+    def get_block_formulas_from_endpoint(self, end):
+        '''
+        This method returns all the formulas given an endpoint.
+        '''
+        
+        # We must query for endpoints in L and B.
+        assert(end[0] == 0 or end[1] == 0)
+        
+        # The endpoint must be inside the block
+        assert((0 <= end[0] <= self.tau) and (0 <= end[1] <= self.tau))
+        
+        formulas = []
+    
+        # Top formulas.
+        for j in range(end[1], self.tau + 1):
+            init = (self.tau, j)
+            relevant_forms = self.get_relevant_formulas(v_init=init, v_end=end)
+            formulas = formulas + relevant_forms
+            
+        # Left formulas.
+        for i in range(end[0], self.tau):
+            init = (i, self.tau)
+            relevant_forms = self.get_relevant_formulas(v_init=init, v_end=end)
+            formulas = formulas + relevant_forms
+            
+        return formulas
