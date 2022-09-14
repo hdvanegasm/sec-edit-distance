@@ -2,12 +2,7 @@ import collections
 import sys
 
 
-def get_n_black_edges(path_colored):
-    '''
-    Returns the number of black edges in the path.
-    '''
-    
-    return path_colored.count("b")
+
 
 
 class Graph:
@@ -34,6 +29,13 @@ class Graph:
         '''
         if not v in self.adj:
             self.adj[v] = []
+            
+    def get_n_black_edges(self, path):
+        '''
+        Returns the number of black edges in the path.
+        '''
+    
+        return self.get_colored_path(path).count("b")
             
     def DFS(self, v, w, visited, path, result):
         '''
@@ -102,8 +104,8 @@ class Graph:
             is_relevant = True
             for shortest_path in shortest_paths:
                 red_diff = self.get_n_red_diff(path, shortest_path)
-                n_black_path = get_n_black_edges(path)
-                n_black_shortest = get_n_black_edges(shortest_path)
+                n_black_path = self.get_n_black_edges(path)
+                n_black_shortest = self.get_n_black_edges(shortest_path)
                 
                 if red_diff + n_black_shortest <= n_black_path:
                     is_relevant = False
@@ -113,17 +115,49 @@ class Graph:
                 
         return relevant_paths
     
+    def get_relevant_paths_all_to_all(self, v_init, v_end):
+        all_paths = self.all_paths(v_init, v_end)
+        relevant_paths = []
+        for i in range(len(all_paths)):
+            current_path = all_paths[i]
+            is_relevant = True
+            for j in range(len(all_paths)):
+                if i == j:
+                    continue
+                other_path = all_paths[j]
+                red_diff = self.get_n_red_diff(current_path, other_path)
+                b_current = self.get_n_black_edges(current_path)
+                b_other = self.get_n_black_edges(other_path)
+                
+                if red_diff + b_other <= b_current:
+                    print(
+                        "Deleted:",
+                        self.get_formula_from_path(current_path),
+                        " - when compared to:",
+                        self.get_formula_from_path(other_path),
+                        "b_current =", b_current,
+                        "b_other =", b_other,
+                        "r_diff =", red_diff
+                    )
+                    is_relevant = False
+            
+            if is_relevant:
+                relevant_paths.append(current_path)
+                
+        return relevant_paths
+                
     def get_relevant_formulas(self, v_init, v_end):
         '''
-        This method returns all the relevant formulas. A formula will be repre-
-        sented as a list of tuple of t indexes plus the number of black edges.
-        For example: 
-            ([(1, 2), (2, 0)], 4)
-        represents the formula with the following form
-           D_{end} = D_{init} + t_{i-1, j-2} + t_{i-2, j} + 4
+        This method returns all the relevant formulas given the initial and
+        final vertices.
         '''
         
-        relevant_paths = self.get_relevant_paths(v_init, v_end)
+        # This code is for obtain the relevant paths comparing only with the set
+        # of shortest paths:
+        # ===========================================================
+        #     relevant_paths = self.get_relevant_paths(v_init, v_end)
+        # ===========================================================
+        relevant_paths = self.get_relevant_paths_all_to_all(v_init, v_end)
         relevant_forms = []
         for path in relevant_paths:
             relevant_forms.append(self.get_formula_from_path(path))
@@ -146,7 +180,7 @@ class Graph:
             if colored_path[i - 1] == "r":
                 t_indexes.append(path[i])
         
-        n_black = get_n_black_edges(colored_path)
+        n_black = self.get_n_black_edges(path)
         
         return (path[0], t_indexes, n_black)
         
@@ -166,18 +200,17 @@ class Graph:
             tail_ref = path_ref[i - 1]
             head_ref = path_ref[i]
             
-            if path_ref_colors[i - 1] == "b":
-                continue
-            
-            try:
-                index_tail_other = path_other.index(tail_ref)
-            except ValueError:
-                continue
-            
-            if index_tail_other == len(path_other) - 1:
-                continue
-            elif head_ref != path_other[index_tail_other + 1]:
-                count += 1
+            if path_ref_colors[i - 1] == "r":            
+                # TODO Fix this
+                if tail_ref in path_other:
+                    index_tail_other = path_other.index(tail_ref)
+                else:
+                    count += 1
+                
+                if index_tail_other == len(path_other) - 1:
+                    continue
+                elif head_ref != path_other[index_tail_other + 1]:
+                    count += 1
                 
         return count          
     

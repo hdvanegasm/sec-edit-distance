@@ -1,0 +1,12 @@
+import itertools
+
+L = [1, 2, 3, 4, 5]
+first = []
+for combination in itertools.combinations(L, 4):
+    first.append(combination[0])
+    
+a = sint(123)
+
+for elem in first:
+    s = a + elem
+    print_ln("%s", s.reveal())

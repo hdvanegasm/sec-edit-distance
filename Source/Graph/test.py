@@ -24,8 +24,8 @@ if __name__ == "__main__":
         
     print("\n===========[TEST]===========")
     
-    end = (0, 0)
-    tau = 8
+    end = (1, 0)
+    tau = 3
     
     G = graph.Graph(tau)
     G.generate_dependency_graph()
