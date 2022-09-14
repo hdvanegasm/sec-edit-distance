@@ -2,9 +2,6 @@ import collections
 import sys
 
 
-
-
-
 class Graph:
     '''
     Implementation of a graph to represent the dependencies between positions
@@ -116,6 +113,11 @@ class Graph:
         return relevant_paths
     
     def get_relevant_paths_all_to_all(self, v_init, v_end):
+        '''
+        Get all relevant paths by comparing all-to-all with respect to
+        the set of paths.
+        '''
+
         all_paths = self.all_paths(v_init, v_end)
         relevant_paths = []
         for i in range(len(all_paths)):
@@ -130,15 +132,6 @@ class Graph:
                 b_other = self.get_n_black_edges(other_path)
                 
                 if red_diff + b_other <= b_current:
-                    print(
-                        "Deleted:",
-                        self.get_formula_from_path(current_path),
-                        " - when compared to:",
-                        self.get_formula_from_path(other_path),
-                        "b_current =", b_current,
-                        "b_other =", b_other,
-                        "r_diff =", red_diff
-                    )
                     is_relevant = False
             
             if is_relevant:
@@ -201,15 +194,14 @@ class Graph:
             head_ref = path_ref[i]
             
             if path_ref_colors[i - 1] == "r":            
-                # TODO Fix this
-                if tail_ref in path_other:
+                if tail_ref in path_other and head_ref in path_other:
                     index_tail_other = path_other.index(tail_ref)
+                    if index_tail_other < len(path_other) - 1 and \
+                            head_ref != path_other[index_tail_other + 1]:
+                        count += 1
+                    elif index_tail_other == len(path_other) - 1:
+                        count += 1
                 else:
-                    count += 1
-                
-                if index_tail_other == len(path_other) - 1:
-                    continue
-                elif head_ref != path_other[index_tail_other + 1]:
                     count += 1
                 
         return count          
