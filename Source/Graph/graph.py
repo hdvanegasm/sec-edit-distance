@@ -100,7 +100,7 @@ class Graph:
         for path in all_paths:
             is_relevant = True
             for shortest_path in shortest_paths:
-                red_diff = self.get_n_red_diff(path, shortest_path)
+                red_diff = self.get_n_red_diff(shortest_path, path)
                 n_black_path = self.get_n_black_edges(path)
                 n_black_shortest = self.get_n_black_edges(shortest_path)
                 
@@ -109,6 +109,9 @@ class Graph:
             
             if is_relevant:
                 relevant_paths.append(path)
+                
+        for path_r in relevant_paths:
+            print("relevance =", self.is_completely_relevant(path_r))
                 
         return relevant_paths
     
@@ -127,7 +130,7 @@ class Graph:
                 if i == j:
                     continue
                 other_path = all_paths[j]
-                red_diff = self.get_n_red_diff(current_path, other_path)
+                red_diff = self.get_n_red_diff(other_path, current_path)
                 b_current = self.get_n_black_edges(current_path)
                 b_other = self.get_n_black_edges(other_path)
                 
@@ -138,6 +141,26 @@ class Graph:
                 relevant_paths.append(current_path)
                 
         return relevant_paths
+    
+    def is_completely_relevant(self, path):
+        '''
+        Check if a path is inamovible from the result list.
+        '''
+        
+        v_init = path[0]
+        v_end = path[len(path) - 1]
+        all_paths = self.all_paths(v_init, v_end)
+        relevance = True
+        for test_path in all_paths:
+            if test_path == path:
+                continue
+            b_test_path = self.get_n_black_edges(path)
+            b_path = self.get_n_black_edges(path)
+            red_diff = self.get_n_red_diff(path, test_path)
+            if not b_test_path > red_diff + b_path:
+                relevance = False
+                
+        return relevance
                 
     def get_relevant_formulas(self, v_init, v_end):
         '''
@@ -148,9 +171,10 @@ class Graph:
         # This code is for obtain the relevant paths comparing only with the set
         # of shortest paths:
         # ===========================================================
-        #     relevant_paths = self.get_relevant_paths(v_init, v_end)
+        # relevant_paths = self.get_relevant_paths(v_init, v_end)
         # ===========================================================
         relevant_paths = self.get_relevant_paths_all_to_all(v_init, v_end)
+        # ===========================================================
         relevant_forms = []
         for path in relevant_paths:
             relevant_forms.append(self.get_formula_from_path(path))

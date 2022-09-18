@@ -24,8 +24,8 @@ if __name__ == "__main__":
         
     print("\n===========[TEST]===========")
     
-    end = (1, 0)
-    tau = 3
+    end = (0, 0)
+    tau = 4
     
     G = graph.Graph(tau)
     G.generate_dependency_graph()
@@ -34,3 +34,5 @@ if __name__ == "__main__":
     
     for f in formulas:
         print(f)
+        
+    print("Number of formulas:", len(formulas))

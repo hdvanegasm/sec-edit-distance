@@ -2,7 +2,7 @@ import itertools
 import math
 
 if __name__ == "__main__":
-    n = 5
+    n = 4
     
     # Computation of minimum elements in terms of T
     for i in range(0, math.ceil(n / 2)):
