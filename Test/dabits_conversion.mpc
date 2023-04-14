@@ -1,0 +1,11 @@
+program.use_edabit(True)
+sb = sbits.get_type(1)
+
+n = 10
+arr = Array(n, sb)
+arr.assign_all(1)
+
+@for_range_opt(n)
+def _(i):
+	b = sint(arr[i])
+

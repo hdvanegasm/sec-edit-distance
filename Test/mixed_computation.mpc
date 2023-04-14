@@ -1,0 +1,22 @@
+def compute_bitwise_op(a_bit, b_bit):
+    return a_bit.bit_xor(b_bit)
+
+def compute_arithmetic_op(result):
+    return result + result
+
+
+program.use_edabit(True)
+sb = sbits.get_type(1)
+
+a_bit = sb.get_input_from(0)
+b_bit = sb.get_input_from(1)
+
+# Perform some computation in a_bit and b_bit
+result_bit = compute_bitwise_op(a_bit, b_bit)
+
+# Transform the result into arithmetic share
+result_arith = sint(result_bit)
+
+# Perform some arithmetic operations using the result
+final_output = compute_arithmetic_op(result_arith)
+print_ln("Output: %s", final_output.reveal())

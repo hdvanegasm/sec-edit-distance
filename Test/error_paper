@@ -1,0 +1,66 @@
+import numpy as np
+
+def edit_distance_four_paper(A, B):
+    D = np.zeros(shape=(len(A) + 1, len(B) + 1))
+    
+    # Fill base cases
+    for i in range(len(A) + 1):
+        D[i][0] = i
+    for j in range(len(B) + 1):
+        D[0][j] = j
+        
+    t = np.zeros(shape=(len(A) + 1, len(B) + 1))
+    for i in range(1, len(A) + 1):
+        for j in range(1, len(B) + 1):
+            if A[i - 1] == B[j - 1]:
+                t[i, j] = 0
+            else:
+                t[i, j] = 1
+                
+    D[len(A), len(B)] = min(
+        D[0,0] + t[1,1] + t[2,2] + t[3,3] + t[4,4],
+        D[0,1] + t[1,2] + t[2,3] + t[3,4] + 1,
+        D[0,1] + t[1,2] + t[2,3] + t[4,4] + 1,
+        D[0,1] + t[1,2] + t[3,3] + t[4,4] + 1,
+        D[0,1] + t[2,2] + t[3,3] + t[4,4] + 1,
+        D[0,2] + t[1,3] + t[2,4] + 2,
+        D[0,2] + t[1,3] + t[3,4] + 2,
+        D[0,2] + t[1,3] + t[4,4] + 2,
+        D[0,2] + t[2,3] + t[3,4] + 2,
+        D[0,2] + t[2,3] + t[4,4] + 2,
+        D[0,2] + t[3,3] + t[4,4] + 2,
+        D[0,3] + t[1,4] + 3,
+        D[0,3] + t[2,4] + 3,
+        D[0,3] + t[3,4] + 3,
+        D[0,3] + t[4,4] + 3,
+        D[0,4] + 4,
+        D[1,0] + t[2,1] + t[3,2] + t[4,3] + 1,
+        D[1,0] + t[2,1] + t[3,2] + t[4,4] + 1,
+        D[1,0] + t[2,1] + t[3,3] + t[4,4] + 1,
+        D[1,0] + t[2,2] + t[3,3] + t[4,4] + 1,
+        D[2,0] + t[3,1] + t[4,2] + 2,
+        D[2,0] + t[3,1] + t[4,3] + 2,
+        D[2,0] + t[3,1] + t[4,4] + 2,
+        D[2,0] + t[3,2] + t[4,3] + 2,
+        D[2,0] + t[3,2] + t[4,4] + 2,
+        D[2,0] + t[3,3] + t[4,4] + 2,
+        D[3,0] + t[4,1] + 3,
+        D[3,0] + t[4,2] + 3,
+        D[3,0] + t[4,3] + 3,
+        D[3,0] + t[4,4] + 3,
+        D[4,0] + 4
+    )
+    
+    return D[len(A), len(B)]
+    
+if __name__ == "__main__":
+    file_chain_A = open("Inputs/arithmetic/Input-P0-0")
+    file_chain_B = open("Inputs/arithmetic/Input-P1-0")
+    
+    A = file_chain_A.read().replace("\n", "")
+    B = file_chain_B.read().replace("\n", "")   
+    
+    file_chain_A.close()
+    file_chain_B.close()
+
+    print("Distance =", edit_distance_four_paper(A, B))

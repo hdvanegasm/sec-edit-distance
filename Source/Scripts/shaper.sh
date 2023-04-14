@@ -36,16 +36,16 @@
 #  Original script written by: Scott Seong
 
 # Rate to throttle to
-RATE=24mbps
+RATE=1Gbps
 
 # Peak rate to allow
-PEAKRATE=24mbps
+PEAKRATE=1Gbps
 
 # Interface to shape
 IF=lo
 
 # Average to delay packets by
-LATENCY=42ms
+LATENCY=0.3ms
 
 
 start() {

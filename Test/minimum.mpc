@@ -2,7 +2,7 @@ from Compiler import util
 
 # program.use_edabit(True)
 
-n = 8
+n = 3 
 
 m = Array(1, sint)
 

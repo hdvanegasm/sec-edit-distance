@@ -2,6 +2,19 @@ import collections
 import sys
 
 
+def format_formula(formula):
+    D = formula[0]
+    t_list = formula[1]
+    b = formula[2]
+    
+    final_str = "D[i-{}, j-{}]".format(D[0], D[1])
+    
+    for t in t_list:
+        final_str += " + t[i-{}, j-{}]".format(t[0], t[1])
+        
+    final_str += " + {}".format(b)
+    return final_str
+
 class Graph:
     '''
     Implementation of a graph to represent the dependencies between positions

@@ -1,0 +1,9 @@
+import math
+
+a1 = sint(0)
+a2 = sint(1)
+a3 = sint(2)
+
+@for_range(16 * 16)
+def _(_):
+    d = a1.min(a2.min(a3))

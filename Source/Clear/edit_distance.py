@@ -27,6 +27,8 @@ def edit_distance(A, B):
                 D[i - 1][j - 1] + t
             )
     
+    print(D)
+    
     return D[len(A)][len(B)]
 
 if __name__ == "__main__":

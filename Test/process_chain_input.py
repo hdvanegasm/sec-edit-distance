@@ -22,22 +22,30 @@ and
 0 1
 '''
 
-getbinary = lambda x, n: format(x, 'b').zfill(n)
 
-chain = input("Input chain:\n")
+def getbinary(x, n):
+    return format(x, "b").zfill(n)
+
+
+with open("Test/chain_raw.txt", "r") as file_chain:
+    chain = file_chain.read()
 
 L = []
 for element in chain:
     n = int(element)
     L.append(n)
 
-print("===========[ BINARY ]===============")
-
+# Output binary
+output_string = ""
 for n in L:
     binary = getbinary(n, 2)
-    print(binary[0], binary[1])
-    
-print("===========[ ARITHMETIC ]===============")
+    output_string += str(binary[0]) + " " + str(binary[1]) + "\n"
+
+output_string += "\n" + "========" + "\n\n"
 
 for n in L:
-    print(n)
+    output_string += str(n) + "\n"
+
+print("Writing in file")
+with open("Test/chain_converted.txt", "w") as converted_file:
+    converted_file.write(output_string)
