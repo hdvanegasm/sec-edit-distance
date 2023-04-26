@@ -70,9 +70,9 @@ def edit_distance(A, B):
     def _(j):
         D[0][j] = j
 
-    @for_range(2, len(A) + 1, 2)
+    @for_range_opt(2, len(A) + 1, 2)
     def _(i):
-        @for_range(2, len(B) + 1, 2)
+        @for_range_opt(2, len(B) + 1, 2)
         def _(j):
             terms_ij = [
                 D[i - 2][j - 2] + T[i - 1 - 1][j - 1 - 1] + T[i - 1][j - 1],

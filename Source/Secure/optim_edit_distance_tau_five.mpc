@@ -51,9 +51,9 @@ def edit_distance(A, B):
     def _(j):
         D[0][j] = j
 
-    @for_range(5, len(A) + 1, 5)
+    @for_range_opt(5, len(A) + 1, 5)
     def _(i):
-        @for_range(5, len(B) + 1, 5)
+        @for_range_opt(5, len(B) + 1, 5)
         def _(j):
             terms_i_j = [
                 D[i-5][j-0] + 5,

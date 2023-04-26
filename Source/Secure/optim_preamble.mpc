@@ -15,9 +15,9 @@ def equal_nucleotids(N1, N2):
 
 def compute_comp_matrix(A, B):
     M_comp = Matrix(len(A), len(B), sint)
-    @for_range(len(A))
+    @for_range_opt(len(A))
     def _(i):
-        @for_range(len(B))
+        @for_range_opt(len(B))
         def _(j):
             comp = equal_nucleotids(A[i], B[j]).bit_not()
             M_comp[i][j] = comp
