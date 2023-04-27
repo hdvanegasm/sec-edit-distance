@@ -1,4 +1,6 @@
-@for_range(0, 10, 2)
+a = sint(0)
+b = sint(0)
+
+@for_range_opt(0, 10, 2)
 def _(i):
-    print_ln("%s", i)
-    i = i - 1
+    c = a * b
