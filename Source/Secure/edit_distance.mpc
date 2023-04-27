@@ -8,11 +8,11 @@ def edit_distance(A, B):
     D = Matrix(len(A) + 1, len(B) + 1, sint)
     D.assign_all(0)
 
-    @for_range(len(A) + 1)
+    @for_range_opt(len(A) + 1)
     def _(i):
         D[i][0] = i
 
-    @for_range(len(B) + 1)
+    @for_range_opt(len(B) + 1)
     def _(j):
         D[0][j] = j
 
