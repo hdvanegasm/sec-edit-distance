@@ -1,0 +1,136 @@
+'''
+Implementation of secure edit distance computation. The optimizations are the 
+following:
+    * The computation of the funcion t(.,.) is done using shares in Z_2. The 
+      transition to shares in Z_M is done using daBits/edaBits for share conver-
+      sion. This conversion allows to compute the comparisons faster.
+    * The computation of the matrix D is done by sub-matrices of size tau=2. This 
+      allows to use protocols to compute the min() function using a logaritmic number
+      of rounds in the number of arguments. This reduces the overall number of
+      rows significatively.
+      
+Note: here we are not interested in reconstructing the aligment. Moreover, con-
+sidering such context, there is away to optimize the computation to use only the
+three values needed in each iteration and put aside the other values of the ma-
+trix D. Such approach is not useful here because it only saves memory for each 
+party locally, but the information that is sent is the same compared to a tradi-
+tional implementation that computes and saves the whole matrix D.
+'''
+
+from Compiler import util
+
+program.use_edabit(True)
+sb = sbits.get_type(1)
+
+def xor_nucleotids(N1, N2):
+    xor = Array(2, sb)
+    xor[0] = N1[0] ^ N2[0]
+    xor[1] = N1[1] ^ N2[1]
+    return xor
+
+
+def or_nucleotid(N):
+    return N[0].bit_or(N[1])
+
+
+def equal_nucleotids(N1, N2):
+    return or_nucleotid(xor_nucleotids(N1, N2)).bit_not()
+
+
+def compute_comp_matrix(A, B):
+    M_comp = Matrix(len(A), len(B), sb)
+    @for_range_opt(len(A))
+    def _(i):
+        @for_range_opt(len(B))
+        def _(j):
+            comp = equal_nucleotids(A[i], B[j]).bit_not()
+            M_comp[i][j] = comp
+
+    return M_comp
+
+
+def edit_distance(A, B):
+    T_bits = compute_comp_matrix(A, B)
+    T = Matrix(len(T_bits), len(T_bits[0]), sint)
+
+    @for_range_opt(len(T_bits))
+    def _(i):
+        @for_range_opt(len(T_bits[0]))
+        def _(j):
+            T[i][j] = sint(T_bits[i][j])
+    
+    D = Matrix(len(A) + 1, len(B) + 1, sint)
+    D.assign_all(0)
+
+    @for_range_opt(len(A) + 1)
+    def _(i):
+        D[i][0] = i
+
+    @for_range_opt(len(B) + 1)
+    def _(j):
+        D[0][j] = j
+
+    @for_range(2, len(A) + 1, 2)
+    def _(i):
+        @for_range(2, len(B) + 1, 2)
+        def _(j):
+            terms = Matrix(3, 7, sint)
+            terms.assign_all(len(A))
+            
+            terms[0][0] = D[i - 2][j - 2] + T[i - 1 - 1][j - 1 - 1] + T[i - 1][j - 1]
+            terms[0][1] = D[i - 2][j - 1] + T[i - 1 - 1][j - 1] + 1
+            terms[0][2] = D[i - 2][j - 1] + T[i - 1][j - 1] + 1
+            terms[0][3] = D[i - 2][j] + 2
+            terms[0][4] = D[i - 1][j - 2] + T[i - 1][j - 1] + 1
+            terms[0][5] = D[i - 1][j - 2] + T[i - 1][j - 1 - 1] + 1
+            terms[0][6] = D[i][j - 2] + 2
+            
+            terms[1][0] = D[i - 2][j - 1] + 2
+            terms[1][1] = D[i - 2][j - 2] + T[i - 1 - 1][j - 1 - 1] + 1
+            terms[1][2] = D[i][j - 2] + 1
+            terms[1][3] = D[i - 1][j - 2] + T[i - 1][j - 1 - 1]
+           
+            terms[2][0] = D[i - 1][j - 2] + 2
+            terms[2][1] = D[i - 2][j - 2] + T[i - 1 - 1][j - 1 - 1] + 1
+            terms[2][2] = D[i - 2][j] + 1
+            terms[2][3] = D[i - 2][j - 1] + T[i - 1 - 1][j - 1]
+            
+            list_positions = Matrix(3, 2, regint)
+            list_positions[0][0] = i
+            list_positions[0][1] = j
+            list_positions[1][0] = i - 1
+            list_positions[1][1] = j
+            list_positions[2][0] = i
+            list_positions[2][1] = j - 1
+
+            @for_range_opt(len(list_positions))
+            def _(k):
+                pos_i = list_positions[k][0]
+                pos_j = list_positions[k][1]
+                
+                form_pos = (pos_j - j) - (pos_i - i) + 1
+
+                D[pos_i][pos_j] = util.min(terms[form_pos])
+                
+    return D[len(A)][len(B)]
+
+
+def read_strings(A_length, B_length):
+    A = Matrix(A_length, 2, sb)
+    B = Matrix(B_length, 2, sb)
+
+    for i in range(A_length):
+        A[i][0] = sb.get_input_from(0)
+        A[i][1] = sb.get_input_from(0)
+    for j in range(B_length):
+        B[j][0] = sb.get_input_from(1)
+        B[j][1] = sb.get_input_from(1)
+
+    return A, B
+
+
+A_length = int(program.args[1])
+B_length = int(program.args[2])
+A, B = read_strings(A_length, B_length)
+d = edit_distance(A, B)
+print_ln("Edit distance = %s", d.reveal())
