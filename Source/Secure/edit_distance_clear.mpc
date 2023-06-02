@@ -46,12 +46,11 @@ def edit_distance(A, B):
 
 def read_strings(A_length, B_length):
     A = Array(A_length, sint)
-    B = Array(B_length, sint)
+    B = Array(B_length, cint)
+    B.assign_all(1)
 
     for i in range(A_length):
         A[i] = sint.get_input_from(0)
-    for j in range(B_length):
-        B[j] = sint.get_input_from(1)
 
     return A, B
 

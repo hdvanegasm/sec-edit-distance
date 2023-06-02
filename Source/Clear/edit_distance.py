@@ -44,4 +44,3 @@ if __name__ == "__main__":
     file_chain_B.close()
 
     print("Distance =", edit_distance(A, B))
-

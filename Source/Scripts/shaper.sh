@@ -30,7 +30,7 @@
 #  
 #  MOFIFIED BY:
 #  ------------
-#  Hernán Vanegas. 
+#  Me
 #  With colaboration of (https://gist.github.com/trongthanh/1196596/0cabc49e4e8a6165697225c81701c41dd31171f5)
 #  
 #  Original script written by: Scott Seong

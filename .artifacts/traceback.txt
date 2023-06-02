@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/linuxbrew/.linuxbrew/Cellar/python@3.10/3.10.8/lib/python3.10/site-packages/concrete/fhe/compilation/compiler.py", line 434, in compile
+    self._evaluate("Compiling", inputset)
+  File "/home/linuxbrew/.linuxbrew/Cellar/python@3.10/3.10.8/lib/python3.10/site-packages/concrete/fhe/compilation/compiler.py", line 279, in _evaluate
+    self._trace(first_sample)
+  File "/home/linuxbrew/.linuxbrew/Cellar/python@3.10/3.10.8/lib/python3.10/site-packages/concrete/fhe/compilation/compiler.py", line 207, in _trace
+    self.graph = Tracer.trace(self.function, parameters)
+  File "/home/linuxbrew/.linuxbrew/Cellar/python@3.10/3.10.8/lib/python3.10/site-packages/concrete/fhe/tracing/tracer.py", line 77, in trace
+    output_tracers: Any = function(**arguments)
+  File "/home/hdvanegasm/Documents/ThesisProject/Implementations/edit_distance/Source/HE/edit_distance.py", line 22, in edit_distance
+    D[i][j] = final_min[0]
+  File "/home/linuxbrew/.linuxbrew/Cellar/python@3.10/3.10.8/lib/python3.10/site-packages/concrete/fhe/tracing/tracer.py", line 753, in __getitem__
+    output_value.shape = np.zeros(output_value.shape)[index].shape
+IndexError: too many indices for array: array is 0-dimensional, but 1 were indexed

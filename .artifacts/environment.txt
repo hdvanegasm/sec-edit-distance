@@ -1,0 +1,2 @@
+Linux-5.19.0-41-generic-x86_64-with-glibc2.35 #42~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Apr 18 17:40:00 UTC 2
+Python 3.10.8
